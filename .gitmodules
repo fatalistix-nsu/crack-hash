@@ -1,0 +1,6 @@
+[submodule "crack-hash-manager"]
+	path = crack-hash-manager
+	url = ./crack-hash-manager
+[submodule "crack-hash-worker"]
+	path = crack-hash-worker
+	url = ./crack-hash-worker
