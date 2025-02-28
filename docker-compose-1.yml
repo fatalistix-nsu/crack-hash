@@ -1,0 +1,36 @@
+services:
+
+  manager:
+    build:
+      context: ./crack-hash-manager/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    ports:
+      - "6969:6969"
+    networks:
+      - crack_hash_net
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:6969/health || exit 1"]
+      interval: 5s
+      retries: 3
+      timeout: 10s
+
+  worker:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    ports:
+      - "6970:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+networks:
+  crack_hash_net:
+    driver: bridge
+    name: crack_hash
