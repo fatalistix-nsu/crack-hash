@@ -1,0 +1,177 @@
+services:
+
+  manager:
+    build:
+      context: ./crack-hash-manager/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    ports:
+      - "${MANAGER_PORT}:${MANAGER_PORT}"
+    env_file:
+      .env
+    networks:
+      - crack_hash_net
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:${MANAGER_PORT}/health || exit 1"]
+      interval: 5s
+      retries: 3
+      timeout: 10s
+
+  worker_1:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6970:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_2:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6971:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_3:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6972:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_4:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6973:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_5:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6974:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_6:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6975:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_7:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6976:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+  worker_8:
+    build:
+      context: ./crack-hash-worker/
+      dockerfile: ./Dockerfile
+    deploy:
+      replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 1
+      GOMAXPROCS: 1
+      GOMEMLIMIT: 1GiB
+    ports:
+      - "6977:6970"
+    networks:
+      - crack_hash_net
+    depends_on:
+      manager:
+        condition: service_healthy
+
+
+networks:
+  crack_hash_net:
+    driver: bridge
+    name: crack_hash
