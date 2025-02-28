@@ -7,11 +7,13 @@ services:
     deploy:
       replicas: 1
     ports:
-      - "6969:6969"
+      - "${MANAGER_PORT}:${MANAGER_PORT}"
+    env_file:
+      .env
     networks:
       - crack_hash_net
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:6969/health || exit 1"]
+      test: ["CMD-SHELL", "curl --fail http://localhost:${MANAGER_PORT}/health || exit 1"]
       interval: 5s
       retries: 3
       timeout: 10s
@@ -22,6 +24,11 @@ services:
       dockerfile: ./Dockerfile
     deploy:
       replicas: 1
+    environment:
+      MANAGER_ADDRESS: manager:${MANAGER_PORT}
+      WORKER_GOROUTINE_COUNT: 10
+      GOMAXPROCS: 10
+      GOMEMLIMIT: 1GiB
     ports:
       - "6970:6970"
     networks:
